@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ModelAndView;
+import javax.servlet.ServletContext;
 
 import com.model.Product;
 import com.service.ProductService;
@@ -33,6 +34,9 @@ public class ProductController {
 
 	@Autowired
 	private ProductService productService;
+
+	@Autowired
+	private ServletContext context;
 
 	// Getters and Setters
 
@@ -95,8 +99,8 @@ public class ProductController {
 
 		// Here the Path class is used to refer the path of the file
 
-		Path path = Paths.get("C:/Users/Ismail/workspace/ShoppingCart/src/main/webapp/WEB-INF/resource/images/products/"
-				+ productId + ".jpg");
+		String uploadDir = context.getRealPath("/WEB-INF/resource/images/products/");
+		Path path = Paths.get(uploadDir + File.separator + productId + ".jpg");
 
 		if (Files.exists(path)) {
 			try {
@@ -131,9 +135,8 @@ public class ProductController {
 		productService.addProduct(product);
 		MultipartFile image = product.getProductImage();
 		if (image != null && !image.isEmpty()) {
-			Path path = Paths
-					.get("C:\\Users\\minhq\\Downloads\\E-Commerce\\src\\main\\webapp\\WEB-INF\\resource\\images\\products\\"
-							+ product.getProductId() + ".jpg");
+			String uploadDir = context.getRealPath("/WEB-INF/resource/images/products/");
+			Path path = Paths.get(uploadDir + File.separator + product.getProductId() + ".jpg");
 
 			try {
 				image.transferTo(new File(path.toString()));
