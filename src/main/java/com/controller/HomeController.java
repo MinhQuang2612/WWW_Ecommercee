@@ -2,6 +2,8 @@ package com.controller;
 
 import javax.validation.Valid;
 
+import com.model.Product;
+import com.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,12 +17,18 @@ import org.springframework.web.servlet.ModelAndView;
 import com.model.Queries;
 import com.service.QueriesService;
 
+import java.util.List;
+
 @Controller
 public class HomeController {
 
-	@RequestMapping({ "/index", "/index1" })
-	public String sayIndex() {
-		return "index1";
+	@Autowired
+	private ProductService productService;
+
+	@RequestMapping({"/", "/index", "/index1" })
+	public ModelAndView sayIndex() {
+		List<Product> products = productService.getAllProducts(); return new
+				ModelAndView("index1", "products", products);
 	}
 
 	@RequestMapping("/hello")
