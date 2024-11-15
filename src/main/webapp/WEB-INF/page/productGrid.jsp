@@ -31,9 +31,10 @@
                     <p><b>${product.productName}</b></p>
                     <p>
                         <ul>
-                            <li>Category - ${product.productCategory}</li>
+                        	<li>Unit stock - ${product.unitStock}</li>
                             <li>Description - ${product.productDescription}</li>
                             <li>Manufacturer - ${product.productManufacturer}</li>
+                            
                             <li>Price - ${product.productPrice}</li>
                         </ul>
                     </p>

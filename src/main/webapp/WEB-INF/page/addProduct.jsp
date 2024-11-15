@@ -50,13 +50,13 @@
 									placeholder="Enter Product Description.." class="form-control"
 									path="productDescription"></form:textarea>
 						</div>
-						<div class="form-group">
+						<%-- <div class="form-group">
 						<form:label path="productCategory">Product Category</form:label>
 								 <form:radiobutton path="productCategory" value="Android"/>Android
 								 <form:radiobutton path="productCategory" value="Windows"/>Windows
 								 <form:radiobutton path="productCategory" value="Linux"/>Linux
 								 <form:radiobutton path="productCategory" value="Mac"/>Mac
-						</div>
+						</div> --%>
 						<div class="row">
 							<div class="col-sm-4 form-group">
 								<form:label path="productManufacturer">Product Manufacturer</form:label>
