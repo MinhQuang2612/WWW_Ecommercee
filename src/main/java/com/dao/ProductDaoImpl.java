@@ -49,10 +49,12 @@ public class ProductDaoImpl implements ProductDao {
 	        return new ArrayList<>(); // Trả về danh sách trống nếu keyword không hợp lệ
 	    }
 
-	    String hql = "FROM Product p WHERE p.productName LIKE :keyword OR p.productManufacturer LIKE :keyword";
-	    Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		Session session = sessionFactory.openSession();
+		String hql = "FROM Product p WHERE p.productName LIKE :keyword OR p.productManufacturer LIKE :keyword";
+		Query query = session.createQuery(hql);
 	    query.setParameter("keyword", "%" + keyword.trim() + "%");
-	    return query.list();
+		List<Product> products = query.list();
+	    return products;
 	}
 
 	public List<Product> getAllProducts() {
