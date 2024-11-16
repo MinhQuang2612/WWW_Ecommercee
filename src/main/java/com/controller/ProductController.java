@@ -48,12 +48,12 @@ public class ProductController {
 		this.productService = productService;
 	}
 	
-	@RequestMapping("/productGrid")
-    public String showProductGrid(Model model) {
-        List<Product> products = productService.getFeaturedProducts(5); // Lấy 5 sản phẩm để hiển thị
-        model.addAttribute("products", products);
-        return "productGrid";
-    }
+//	@RequestMapping("/productGrid")
+//    public String showProductGrid(Model model) {
+//        List<Product> products = productService.getFeaturedProducts(5); // Lấy 5 sản phẩm để hiển thị
+//        model.addAttribute("products", products);
+//        return "productGrid";
+//    }
 
 	// Configuration for MultiPartResolver
 	// Multipart resolver is for uploading images and other media

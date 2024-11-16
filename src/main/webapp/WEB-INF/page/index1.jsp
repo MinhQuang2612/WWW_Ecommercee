@@ -8,7 +8,13 @@
     <link rel="icon" type="image/x-icon" href="<c:url value='/resource/images/favicon1.png'/>" />
 </head>
 <body>
-    <%@ include file="navbar.jsp"%> 
+    <%@ include file="navbar.jsp"%>
+    <!-- Hiển thị thông báo tìm kiếm -->
+    <c:if test="${!empty searchKeyword}">
+        <div class="alert alert-info" style="margin: 20px;">
+            Kết quả tìm kiếm cho từ khóa: <strong>${searchKeyword}</strong>
+        </div>
+    </c:if>
     <%@ include file="slider.jsp"%> 
     <%@ include file="productGrid.jsp"%> 
     <%@ include file="footer.jsp"%> 

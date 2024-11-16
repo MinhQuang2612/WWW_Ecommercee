@@ -28,12 +28,19 @@ public class ProductServiceImpl implements ProductService {
 		return productDao.getAllProducts();
 	}
 	
-	 @Override
-	    @Transactional
-	    public List<Product> getFeaturedProducts(int limit) {
-	        return productDao.getFeaturedProducts(limit);
-	    }
-
+//	 @Override
+//	 @Transactional
+//	 public List<Product> getFeaturedProducts(int limit) {
+//		 return productDao.getFeaturedProducts(limit);
+//	 }
+	 
+	 @Transactional
+	 public List<Product> searchProducts(String keyword) {
+	     if (keyword == null || keyword.trim().isEmpty()) {
+	         throw new IllegalArgumentException("Vui lòng nhập từ khóa tìm kiếm.");
+	     }
+	     return productDao.searchProducts(keyword);
+	 }
 	
 	public Product getProductById(Long productId) {
 		return productDao.getProductById(productId);

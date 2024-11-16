@@ -30,7 +30,19 @@ public class HomeController {
 		List<Product> products = productService.getAllProducts(); return new
 				ModelAndView("index1", "products", products);
 	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+    public ModelAndView searchProducts(@RequestParam("searchTerm") String keyword) {
+        // Xử lý tìm kiếm
+        List<Product> products = productService.searchProducts(keyword); 
 
+        // Trả về trang index1 với kết quả tìm kiếm
+        ModelAndView mav = new ModelAndView("index1");
+        mav.addObject("products", products);  // Truyền danh sách sản phẩm về giao diện
+        mav.addObject("searchKeyword", keyword);  // Truyền từ khóa tìm kiếm về giao diện
+        return mav;
+    }
+	
 	@RequestMapping("/hello")
 	public ModelAndView sayHello() {
 		return new ModelAndView("hello", "hello", "Hello Mr.Ismail");

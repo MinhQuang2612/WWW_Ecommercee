@@ -1,7 +1,9 @@
 package com.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +33,27 @@ public class ProductDaoImpl implements ProductDao {
 		this.sessionFactory = sessionFactory;
 	}
 	
+//	@Override
+//	public List<Product> getFeaturedProducts(int limit) {
+//	    Session session = sessionFactory.openSession();
+//	    List<Product> products = session.createQuery("FROM Product")
+//	                                    .setMaxResults(limit)
+//	                                    .list();
+//	    session.close();
+//	    return products;
+//	}
+	
 	@Override
-	public List<Product> getFeaturedProducts(int limit) {
-	    Session session = sessionFactory.openSession();
-	    List<Product> products = session.createQuery("FROM Product")
-	                                    .setMaxResults(limit)
-	                                    .list();
-	    session.close();
-	    return products;
-	}
+	public List<Product> searchProducts(String keyword) {
+	    if (keyword == null || keyword.trim().isEmpty()) {
+	        return new ArrayList<>(); // Trả về danh sách trống nếu keyword không hợp lệ
+	    }
 
+	    String hql = "FROM Product p WHERE p.productName LIKE :keyword OR p.productManufacturer LIKE :keyword";
+	    Query query = sessionFactory.getCurrentSession().createQuery(hql);
+	    query.setParameter("keyword", "%" + keyword.trim() + "%");
+	    return query.list();
+	}
 
 	public List<Product> getAllProducts() {
 		// Reading the records from the table

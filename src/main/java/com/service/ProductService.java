@@ -16,5 +16,7 @@ public interface ProductService {
 	
 	public void editProduct(Product product);
 
-	public List<Product> getFeaturedProducts(int limit);
+	//public List<Product> getFeaturedProducts(int limit);
+
+	public List<Product> searchProducts(String keyword);
 }

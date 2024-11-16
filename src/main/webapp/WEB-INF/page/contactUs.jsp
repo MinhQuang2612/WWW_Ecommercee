@@ -31,7 +31,7 @@
 <script src="<c:url value="/resource/js/scripts.js"/>"></script>
 <style>
 body {
-	background-image: url("<c:url value="/ resource/ images/ 1.jpg "/>");
+    background-image: url("<c:url value='/resource/images/1.jpg'/>");
 }
 </style>
 
