@@ -122,7 +122,7 @@ body {
 	<div class="top-bar">
 		<div class="logo-container">
 			<img src="<c:url value='/resource/images/logo.jpg'/>" alt="logo">
-			<a href="<c:url value='/index1'/>">ShopIeasy</a>
+			<a href="<c:url value='/index1'/>">Aphrodite</a>
 		</div>
 		<div class="search-container">
 			<form action="<c:url value='/search'/>" method="GET"

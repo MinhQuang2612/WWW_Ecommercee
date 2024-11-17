@@ -52,7 +52,7 @@
 				<c:forEach items="${products}" var="prod">
 					<tr>
 						<td style="width: 171px"><img
-							src="<c:url value="/resource/images/products/${prod.productId}.jpg"/>"
+							src="<c:url value="/resource/images/products/${prod.productId}.png"/>"
 							style="width: 100px; height: 90px;" ${prod.productName}"  /></td>
 						<td>${prod.productId}</td>
 						<%-- <td>${prod.productCategory}</td> --%>
@@ -78,7 +78,8 @@
 								<a href="admin/delete/${prod.productId}" class="btn btn-danger"
 									style="margin-left: 5px"> <span
 									class="glyphicon glyphicon-trash"></span></a>
-							</security:authorize></td>
+							</security:authorize>
+						</td>
 					</tr>
 				</c:forEach>
 			</tbody>

@@ -136,7 +136,7 @@ public class ProductController {
 		MultipartFile image = product.getProductImage();
 		if (image != null && !image.isEmpty()) {
 			String uploadDir = context.getRealPath("/WEB-INF/resource/images/products/");
-			Path path = Paths.get(uploadDir + File.separator + product.getProductId() + ".jpg");
+			Path path = Paths.get(uploadDir + File.separator + product.getProductId() + ".png");
 
 			try {
 				image.transferTo(new File(path.toString()));

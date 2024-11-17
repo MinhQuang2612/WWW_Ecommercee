@@ -61,7 +61,7 @@
 							<td><a href="#" class="btn btn-danger"
 								ng-click="removeFromCart(cart.cartItemId)"
 								style="margin-top: 0px;"><span
-									class="glyphicon glyphicon-trash"></span>remove</a></td>
+									class="glyphicon glyphicon-trash"></span>Remove</a></td>
 					</tbody>
 				</table>
 				Grand Total Price: {{calculateGrandTotal()}}

@@ -32,16 +32,24 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
-    public ModelAndView searchProducts(@RequestParam("searchTerm") String keyword) {
-        // Xử lý tìm kiếm
-        List<Product> products = productService.searchProducts(keyword); 
+	public ModelAndView searchProducts(@RequestParam(value = "searchTerm", required = false) String keyword) {
+	    // Kiểm tra nếu searchTerm rỗng
+	    if (keyword == null || keyword.trim().isEmpty()) {
+	        // Nếu rỗng, trả về thông báo lỗi
+	        ModelAndView mav = new ModelAndView("index1");
+	        mav.addObject("errorMessage", "Vui lòng nhập từ khóa tìm kiếm.");
+	        return mav;
+	    }
 
-        // Trả về trang index1 với kết quả tìm kiếm
-        ModelAndView mav = new ModelAndView("index1");
-        mav.addObject("products", products);  // Truyền danh sách sản phẩm về giao diện
-        mav.addObject("searchKeyword", keyword);  // Truyền từ khóa tìm kiếm về giao diện
-        return mav;
-    }
+	    // Xử lý tìm kiếm
+	    List<Product> products = productService.searchProducts(keyword);
+
+	    // Trả về trang index1 với kết quả tìm kiếm
+	    ModelAndView mav = new ModelAndView("index1");
+	    mav.addObject("products", products);
+	    mav.addObject("searchKeyword", keyword);
+	    return mav;
+	}
 	
 	@RequestMapping("/hello")
 	public ModelAndView sayHello() {

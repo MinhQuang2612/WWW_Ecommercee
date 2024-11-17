@@ -28,7 +28,7 @@
 					<tr>
 						<td>Prodcut Image</td>
 						<td><img
-							src="<c:url value="/resource/images/products/${productObj.productId}.jpg"/>"
+							src="<c:url value="/resource/images/products/${productObj.productId}.png"/>"
 							width="40%" alt="${productObj.productName}" /></td>
 					</tr>
 					<tr>
