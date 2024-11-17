@@ -22,12 +22,39 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 <script src="<c:url value="../resource/js/productController.js"/>"></script>
+<style>
+#searchForm button {
+	background-color: #007bff; /* Màu nền nút */
+	color: white; /* Màu chữ */
+	border: none; /* Không có đường viền */
+	padding: 8px 12px; /* Padding cho nút */
+	font-size: 14px; /* Cỡ chữ */
+	cursor: pointer; /* Hiển thị con trỏ khi hover */
+	border-radius: 4px; /* Bo góc */
+	margin-left: 5px;
+}
+
+/* Thêm hiệu ứng hover cho nút */
+#searchForm button:hover {
+	background-color: #0056b3; /* Màu nền khi hover */
+	
+}
+</style>
 </head>
 <body ng-app="myapp">
 	<div class="container" id="productTable"
-		style="width: 1145px; margin-bottom: 180px;">
+		style="width: 1145px; margin-bottom: 180px; margin-top: 15px;">
 		<h2>Product Management</h2>
 		<p>The List of Products in our Database</p>
+
+		<form method="get" action="searchProducts" class="form-inline"
+			id="searchForm" style="margin-bottom: 20px;">
+			<input type="text" name="searchKeyword" class="form-control"
+				placeholder="Search by Name or Manufacturer" style="width: 300px;">
+			<button type="submit">Search</button>
+		</form>
+
+
 		<table class="table table-hover" id="productList">
 			<thead>
 				<tr>
@@ -42,7 +69,7 @@
 					<th>View <security:authorize access="hasAnyRole('ROLE_USER')">
 					/ Add to Cart
 					</security:authorize> <!-- 					views only to the admin --> <security:authorize
-							 access="hasAnyRole('ROLE_ADMIN')">
+							access="hasAnyRole('ROLE_ADMIN')">
 					/Edit/Delete
 					</security:authorize>
 					</th>
@@ -66,7 +93,7 @@
 							role="button"> <span class="glyphicon glyphicon-info-sign"></span></a>
 
 							<!-- 						view only for user --> <security:authorize
-								 access="hasAnyRole('ROLE_USER')">
+								access="hasAnyRole('ROLE_USER')">
 								<a href="#" ng-click="addToCart(${prod.productId})"
 									class="btn btn-primary" style="margin-left: 5px"> <span
 									class="glyphicon glyphicon-shopping-cart"></span></a>
@@ -78,8 +105,7 @@
 								<a href="admin/delete/${prod.productId}" class="btn btn-danger"
 									style="margin-left: 5px"> <span
 									class="glyphicon glyphicon-trash"></span></a>
-							</security:authorize>
-						</td>
+							</security:authorize></td>
 					</tr>
 				</c:forEach>
 			</tbody>
