@@ -37,7 +37,6 @@
 /* Thêm hiệu ứng hover cho nút */
 #searchForm button:hover {
 	background-color: #0056b3; /* Màu nền khi hover */
-	
 }
 </style>
 </head>
@@ -50,9 +49,18 @@
 		<form method="get" action="searchProducts" class="form-inline"
 			id="searchForm" style="margin-bottom: 20px;">
 			<input type="text" name="searchKeyword" class="form-control"
-				placeholder="Search by Name or Manufacturer" style="width: 300px;">
+				placeholder="Search by Name or Manufacturer" style="width: 300px;"
+				required minlength="1">
 			<button type="submit">Search</button>
 		</form>
+
+		<!-- Thêm thông báo lỗi/thành công -->
+		<c:if test="${not empty errorMessage}">
+			<div class="alert alert-danger">${errorMessage}</div>
+		</c:if>
+		<c:if test="${not empty msg}">
+			<div class="alert alert-info">${msg}</div>
+		</c:if>
 
 
 		<table class="table table-hover" id="productList">

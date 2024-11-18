@@ -1,11 +1,11 @@
 package com.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +27,32 @@ public class CustomerDaoImpl implements CustomerDao {
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
+	
+	@Override
+    @SuppressWarnings("unchecked") 
+    public List<Customer> searchCustomers(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        Session session = sessionFactory.getCurrentSession();
+        
+        // Query không sử dụng generic type
+        String hql = "SELECT DISTINCT c FROM Customer c " +
+                    "INNER JOIN c.users u " +
+                    "WHERE LOWER(c.firstName) LIKE LOWER(:keyword) " +
+                    "OR LOWER(c.lastName) LIKE LOWER(:keyword) " +
+                    "OR LOWER(u.emailId) LIKE LOWER(:keyword) " +
+                    "OR LOWER(c.customerPhone) LIKE LOWER(:keyword)";
+        
+        try {
+            Query query = session.createQuery(hql);
+            query.setParameter("keyword", "%" + keyword.trim() + "%");
+            return query.list();  // Sử dụng list() thay vì getResultList()
+        } catch (Exception e) {
+            throw new RuntimeException("Error searching customers: " + e.getMessage());
+        }
+    }
 
 	public void addCustomer(Customer customer) {
 		System.out.println("Adding customer in dao");

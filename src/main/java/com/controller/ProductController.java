@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ModelAndView;
-import javax.servlet.ServletContext;
 
 import com.model.Product;
 import com.service.ProductService;
@@ -59,7 +60,29 @@ public class ProductController {
 	// Multipart resolver is for uploading images and other media
 	// maxupload size is for image size should not be maximum than 10240000
 	
-
+	@RequestMapping(value = "/searchProducts", method = RequestMethod.GET)
+    public String searchProducts(@RequestParam(value = "searchKeyword", required = false) String keyword, Model model) {
+        try {
+            if (keyword != null && !keyword.trim().isEmpty()) {
+                List<Product> searchResults = productService.searchProducts(keyword);
+                if (searchResults.isEmpty()) {
+                    model.addAttribute("msg", "No products found for: " + keyword);
+                }
+                model.addAttribute("products", searchResults);
+            } else {
+                // Nếu không có keyword, hiển thị tất cả sản phẩm
+                List<Product> allProducts = productService.getAllProducts();
+                model.addAttribute("products", allProducts);
+            }
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            // Trong trường hợp lỗi, hiển thị tất cả sản phẩm
+            List<Product> allProducts = productService.getAllProducts();
+            model.addAttribute("products", allProducts);
+        }
+        
+        return "productList";
+    }
 
 	@Bean
 	public MultipartResolver multipartResolver() {

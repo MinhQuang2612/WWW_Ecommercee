@@ -115,6 +115,41 @@ body {
 .navbar .nav>li>a:hover {
 	background-color: #007bff !important;
 }
+
+.user-actions a {
+	display: inline-flex;
+	align-items: center;
+}
+
+.user-actions a span {
+	margin-right: 5px;
+}
+
+.dropdown-menu.dropdown-menu-right {
+    background-color: #1a1a2e;  /* Màu giống navbar */
+    min-width: 160px;          /* Chiều ngang gọn hơn */
+    padding: 5px 0;
+    margin-top: 5px;           /* Khoảng cách với nút Account */
+    border: 1px solid #2c1e4d; /* Viền để phân biệt với nền */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.dropdown-menu.dropdown-menu-right > li > a {
+    color: white;             /* Màu chữ trắng */
+    padding: 8px 15px;        /* Padding cho các mục menu */
+    font-size: 14px;
+}
+
+.dropdown-menu.dropdown-menu-right > li > a:hover {
+    background-color: #007bff; /* Màu khi hover giống với navbar */
+    color: white;
+}
+
+/* Căn chỉnh icon trong dropdown */
+.dropdown-menu.dropdown-menu-right > li > a > span {
+    margin-right: 8px;
+}
+
 </style>
 </head>
 <body>
@@ -127,7 +162,8 @@ body {
 		<div class="search-container">
 			<form action="<c:url value='/search'/>" method="GET"
 				style="display: flex; width: 100%;">
-				<input type="text" placeholder="Search here..." name="searchTerm" value="${param.searchTerm}">
+				<input type="text" placeholder="Search here..." name="searchTerm"
+					value="${param.searchTerm}">
 				<button type="submit">
 					<span class="glyphicon glyphicon-search"></span>
 				</button>
@@ -140,9 +176,21 @@ body {
 				<a href="<c:url value='/cart/getCartById'/>"> <span
 					class="glyphicon glyphicon-shopping-cart"></span> Cart
 				</a>
-				<a href="<c:url value='/logout'/>"> <span
-					class="glyphicon glyphicon-log-out"></span> Logout
-				</a>
+				<div class="dropdown" style="display: inline-block;">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"
+						aria-haspopup="true" aria-expanded="false"> <span
+						class="glyphicon glyphicon-user"></span> Account <span
+						class="caret"></span>
+					</a>
+					<ul class="dropdown-menu dropdown-menu-right">
+						<li><a href="<c:url value='/changePassword'/>"> <span
+								class="glyphicon glyphicon-lock"></span> Change Password
+						</a></li>
+						<li><a href="<c:url value='/logout'/>"> <span
+								class="glyphicon glyphicon-log-out"></span> Logout
+						</a></li>
+					</ul>
+				</div>
 			</c:if>
 			<c:if test="${pageContext.request.userPrincipal.name == null}">
 				<a href="<c:url value='/login'/>"> <span
@@ -177,6 +225,10 @@ body {
 			</ul>
 		</div>
 	</nav>
-
+	<script>
+		$(document).ready(function() {
+			$('.dropdown-toggle').dropdown();
+		});
+	</script>
 </body>
 </html>

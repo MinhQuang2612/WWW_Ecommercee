@@ -38,6 +38,7 @@ public class ProductServiceImpl implements ProductService {
 	 public List<Product> searchProducts(String keyword) {
 	     if (keyword == null || keyword.trim().isEmpty()) {
 	         throw new IllegalArgumentException("Vui lòng nhập từ khóa tìm kiếm.");
+	         
 	     }
 	     return productDao.searchProducts(keyword);
 	 }

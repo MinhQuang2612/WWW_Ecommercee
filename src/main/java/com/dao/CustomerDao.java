@@ -12,4 +12,6 @@ public interface CustomerDao {
 
 	public Customer getCustomerByemailId(String emailId);
 
+	public List<Customer> searchCustomers(String keyword);
+
 }

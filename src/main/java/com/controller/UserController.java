@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.model.BillingAddress;
@@ -50,6 +51,30 @@ public class UserController {
 	    List<Customer> customers = customerService.getAllCustomers(); 
 	    return new ModelAndView("UserList", "customers", customers); 
 	}
+	
+	@RequestMapping(value = "/searchUsers", method = RequestMethod.GET)
+    public String searchUsers(@RequestParam(value = "searchKeyword", required = false) String keyword, 
+                            Model model) {
+        try {
+            List<Customer> searchResults = customerService.searchCustomers(keyword);
+            
+            if (searchResults.isEmpty()) {
+                model.addAttribute("message", "No users found for: " + keyword);
+            } else {
+                model.addAttribute("message", searchResults.size() + " user(s) found");
+            }
+            
+            model.addAttribute("customers", searchResults);
+            model.addAttribute("searchKeyword", keyword);
+            
+            return "UserList";
+            
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "An error occurred while searching: " + e.getMessage());
+            model.addAttribute("customers", customerService.getAllCustomers());
+            return "UserList";
+        }
+    }
 
 	@RequestMapping(value = "/customer/registration")
 	public ModelAndView getRegistrationForm() {

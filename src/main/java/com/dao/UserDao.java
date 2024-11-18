@@ -13,4 +13,5 @@ public interface UserDao {
 	public void addUser(User user);
 	
 	public User getUserById(String userId);
+
 }
