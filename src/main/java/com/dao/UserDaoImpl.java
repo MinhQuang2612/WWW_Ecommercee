@@ -1,6 +1,8 @@
 package com.dao;
 
 import java.util.List;
+
+import com.model.Customer;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +49,19 @@ public class UserDaoImpl implements UserDao {
 		session.close();
 		return user;
 	}
-	
+
+	public User getUserByEmail(String email) {
+		Session session = sessionFactory.openSession();
+		List<User> userList = session.createQuery("from User where emailId = :emailId")
+				.setParameter("emailId", email).setFirstResult(0)
+				.setMaxResults(1).list();
+		session.close();
+
+		// Kiểm tra nếu danh sách không trống và trả về user đầu tiên
+		if (!userList.isEmpty()) {
+			return userList.get(0);
+		} else {
+			return null; // Trả về null nếu không tìm thấy user
+		}
+	}
 }

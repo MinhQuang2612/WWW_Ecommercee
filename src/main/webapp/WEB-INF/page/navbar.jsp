@@ -11,6 +11,9 @@
 	href="<c:url value='/resource/bootstrap/css/bootstrap.min.css'/>">
 <script src="<c:url value='/resource/js/jquery.js'/>"></script>
 <script src="<c:url value='/resource/bootstrap/js/bootstrap.min.js'/>"></script>
+	<script
+			src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<script src="<c:url value="/resource/js/productController.js"/>"></script>
 <style>
 /* Tổng quan */
 body {
@@ -150,9 +153,13 @@ body {
     margin-right: 8px;
 }
 
+.cart-item:hover {
+	color: #FFF;
+}
+
 </style>
 </head>
-<body>
+<body ng-app="myapp" ng-controller="myController" ng-init="getCart(1)">
 	<!-- Thanh trên cùng -->
 	<div class="top-bar">
 		<div class="logo-container">
@@ -173,7 +180,11 @@ body {
 		<div class="user-actions">
 			<c:if test="${!empty pageContext.request.userPrincipal.name}">
 				<span>Welcome, <strong>${pageContext.request.userPrincipal.name}</strong></span>
-				<a href="<c:url value='/cart/getCartById'/>"> <span
+				<a class="cart-item" href="<c:url value='/cart/getCartById'/>" style="position: relative">
+					<div id="total-item" style="z-index: 10000; width: 20px; height: 20px; border-radius: 10px; background-color: blue; font-size: 12px; display: flex; justify-content: center; align-items: center; position: absolute; left: -10px; top: -5px">
+
+					</div>
+					<span
 					class="glyphicon glyphicon-shopping-cart"></span> Cart
 				</a>
 				<div class="dropdown" style="display: inline-block;">

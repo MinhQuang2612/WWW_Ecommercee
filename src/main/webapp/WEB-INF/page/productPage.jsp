@@ -69,6 +69,7 @@
 										class="btn btn-info"
 										style="margin-top: 0px; width: 150px; float: left; margin-right: 31px;">
 										<span class="glyphicon glyphicon-shopping-cart"></span>
+										{{ processingButtons[${productObj.productId}] ? 'Đang xử lý...' : '' }}
 									</a>
 								</security:authorize>
 								<a href="<c:url value="/getAllProducts" />" class="btn btn-info"

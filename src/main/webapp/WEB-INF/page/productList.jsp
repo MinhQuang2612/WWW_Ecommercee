@@ -104,7 +104,9 @@
 								access="hasAnyRole('ROLE_USER')">
 								<a href="#" ng-click="addToCart(${prod.productId})"
 									class="btn btn-primary" style="margin-left: 5px"> <span
-									class="glyphicon glyphicon-shopping-cart"></span></a>
+									class="glyphicon glyphicon-shopping-cart"></span>
+									{{ processingButtons[${prod.productId}] ? 'Đang xử lý...' : '' }}
+								</a>
 							</security:authorize> <!-- 						view only to the admin --> <security:authorize
 								access="hasAnyRole('ROLE_ADMIN')">
 								<a href="admin/product/editProduct/${prod.productId}"

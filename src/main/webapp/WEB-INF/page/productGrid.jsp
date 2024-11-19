@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="<c:url value='/resource/bootstrap/css/bootstrap.min.css'/>">
     <script src="<c:url value='/resource/js/jquery.js'/>"></script>
     <script src="<c:url value='/resource/bootstrap/js/bootstrap.min.js'/>"></script>
+    <script
+            src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="<c:url value="/resource/js/productController.js"/>"></script>
    <style>
     /* Tông màu chủ đạo là xanh dương tối */
     body, h1, h2, h3, h4, h5 {
@@ -101,7 +104,7 @@
 
 </head>
 <body>
-    <div class="product-grid">
+    <div class="product-grid" ng-app="myapp" ng-controller="myController">
         <c:forEach var="product" items="${products}">
             <div class="product-card">
                 <img src="<c:url value='/resource/images/products/${product.productId}.png'/>" alt="${product.productName}">
@@ -114,10 +117,12 @@
                         <li>Price - ${product.productPrice}</li>
                     </ul>
                     <!-- Nút Thêm vào giỏ hàng ở góc -->
-                    <form action="<c:url value='/cart/add'/>" method="POST">
-                        <input type="hidden" name="productId" value="${product.productId}">
-                        <button type="submit" class="add-to-cart-btn">Thêm vào giỏ hàng</button>
-                    </form>
+                    <security:authorize
+                            access="hasAnyRole('ROLE_USER')">
+                    <button type="button" ng-click="addToCart(${product.productId}, this)" class="add-to-cart-btn" ng-disabled="processingButtons[${product.productId}]">
+                        {{ processingButtons[${product.productId}] ? 'Đang xử lý...' : 'Thêm vào giỏ hàng' }}
+                    </button>
+                    </security:authorize>
                 </div>
             </div>
         </c:forEach>

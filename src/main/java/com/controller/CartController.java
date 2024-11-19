@@ -50,7 +50,12 @@ public class CartController {
 	
 	@RequestMapping("/cart/getCart/{cartId}")
 	public @ResponseBody Cart getCartItems(@PathVariable(value="cartId")Long cartId){
-		return cartService.getCartByCartId(cartId);
+
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String emailId = user.getUsername();
+		Customer customer = customerService.getCustomerByemailId(emailId);
+
+		return cartService.getCartByCartId(customer.getCart().getCartId());
 	}
 	
 }

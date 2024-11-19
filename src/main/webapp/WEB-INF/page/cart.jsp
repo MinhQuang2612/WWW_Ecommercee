@@ -46,6 +46,7 @@
 				<table class="table table-hover" id="productList">
 					<thead>
 						<tr>
+							<th>Screen-Shot</th>
 							<th>Product Name</th>
 							<th>Quantity</th>
 							<th>Price</th>
@@ -54,6 +55,7 @@
 					</thead>
 					<tbody>
 						<tr ng-repeat="cart in carts.cartItem">
+							<td style="width: 171px"><img style="width: 100px; height: 90px;" src="<c:url value="/resource/images/products/{{cart.product.productId}}.png"/>" /></td>
 							<td>{{cart.product.productName}}</td>
 							<td>{{cart.quality}}</td>
 							<td>{{cart.product.productPrice}}</td>

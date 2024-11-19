@@ -2,9 +2,16 @@ package com.controller;
 
 import javax.validation.Valid;
 
+import com.dao.UserDao;
+import com.dao.UserDaoImpl;
+import com.model.Customer;
 import com.model.Product;
 import com.service.ProductService;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,12 +25,19 @@ import com.model.Queries;
 import com.service.QueriesService;
 
 import java.util.List;
+import java.util.regex.*;
 
 @Controller
 public class HomeController {
 
 	@Autowired
 	private ProductService productService;
+
+	@Autowired
+	private UserDao userDao;
+
+	@Autowired
+	private SessionFactory sessionFactory;
 
 	@RequestMapping({"/", "/index", "/index1" })
 	public ModelAndView sayIndex() {
@@ -52,8 +66,55 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/changePassword", method = RequestMethod.GET)
-	public String changePassword() {
-	    return "changePassword";
+	public String getChangePassword() {
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return "changePassword";
+	}
+
+	// to insert the data
+	@RequestMapping(value = "/changePassword", method = RequestMethod.POST)
+	public String changePassword(Model model, @RequestParam("currentPassword") String currentPassword,
+								 @RequestParam("newPassword") String newPassword,
+								 @RequestParam("confirmPassword") String confirmPassword) {
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		com.model.User u = userDao.getUserByEmail(user.getUsername());
+//		u.setPassword(newPassword);
+
+		if(!u.getPassword().equals(currentPassword)) {
+			model.addAttribute("errorMsg", "Mật khẩu hiện tại không chính xác");
+			return "changePassword";
+		}
+
+		if(!newPassword.equals(confirmPassword)) {
+			model.addAttribute("errorMsg", "Mật khẩu xác nhận không chính xác");
+			return "changePassword";
+		}
+
+		if(newPassword == currentPassword) {
+			model.addAttribute("errorMsg", "Mật khẩu mới giống mật khẩu hiện tại");
+			return "changePassword";
+		}
+
+		if(newPassword.length() < 8 || ! validatePassword(newPassword) ){
+			model.addAttribute("errorMsg", "Mật khẩu quá yếu");
+			return "changePassword";
+		}
+
+		u.setPassword(newPassword);
+		Session session = sessionFactory.openSession();
+		session.update(u);
+		session.flush();
+		session.close();
+
+		model.addAttribute("successMsg", "Đổi mật khẩu thành công");
+		return "changePassword";
+	}
+
+	public static boolean validatePassword(String password) {
+		String regex = "^(?=.*[A-Za-z])(?=.*\\d).+$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(password);
+		return matcher.matches();
 	}
 	
 	@RequestMapping("/hello")

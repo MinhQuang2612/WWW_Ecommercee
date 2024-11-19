@@ -4,6 +4,8 @@ var app = angular.module("myapp", []).controller(
 
 			var BASE_PATH = "http://localhost:8080";
 
+			$scope.processingButtons = {};
+
 			$scope.getProductList = function() {
 				$http.get(BASE_PATH + "/getProductsList")
 						.success(function(data) {
@@ -12,8 +14,11 @@ var app = angular.module("myapp", []).controller(
 			}
 
 			$scope.addToCart = function(productId) {
+				$scope.processingButtons[productId] = true;
 				$http.put(BASE_PATH + "/cart/add/" + productId)
 						.success(function() {
+							$scope.processingButtons[productId] = false;
+							$scope.getCart(1);
 							alert("Added Successfully");
 						})
 			}
@@ -23,6 +28,16 @@ var app = angular.module("myapp", []).controller(
 								+ $scope.cartId).success(function(data) {
 
 					$scope.carts = data;
+
+					var total = data.cartItem.length;
+
+					if( total > 0 ) {
+						$('#total-item').show().html(total);
+					}
+					else
+					{
+						$('#total-item').hide();
+					}
 				})
 			}
 
