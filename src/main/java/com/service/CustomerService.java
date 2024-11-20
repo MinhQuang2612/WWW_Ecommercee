@@ -12,6 +12,6 @@ public interface CustomerService {
 
 	public Customer getCustomerByemailId(String emailId);
 
-	public List<Customer> searchCustomers(String keyword);
+	public List<Customer> searchCustomers(String searchTerm);
 
 }

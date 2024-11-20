@@ -23,13 +23,39 @@
 		<h2>User Management</h2>
 		<p>The List of Users in our Database</p>
 
-		<form method="get" action="searchUsers" class="form-inline"
-			style="margin-bottom: 20px;">
-			<input type="text" name="searchKeyword" class="form-control"
-				placeholder="Search by Name or Email" style="width: 300px;">
+		<div style="margin-top: 10px;">
+			<c:if test="${not empty searchError}">
+				<div class="alert alert-warning" role="alert">${searchError}</div>
+			</c:if>
+
+			<c:if test="${not empty searchMessage}">
+				<div class="alert alert-info" role="alert">${searchMessage}</div>
+			</c:if>
+		</div>
+
+		<!-- Form search hiện tại của bạn -->
+		<form method="get"
+			action="${pageContext.request.contextPath}/admin/user/searchUsers"
+			class="form-inline" style="margin-bottom: 20px;"
+			onsubmit="return validateSearch();">
+			<input type="text" name="searchKeyword" id="searchKeyword"
+				class="form-control" placeholder="Search by Name or Email"
+				style="width: 300px;">
 			<button type="submit" class="btn btn-primary"
 				style="margin-left: 10px;">Search</button>
 		</form>
+
+		<!-- Thêm JavaScript validation -->
+		<script>
+		function validateSearch() {
+	    var searchKeyword = document.getElementById('searchKeyword').value.trim();
+	    if (searchKeyword === '') {
+	        alert('Please enter a search keyword');
+	        return false;
+	    }
+	    	return true;
+		}
+		</script>
 
 		<table class="table table-hover" id="productList">
 			<thead>

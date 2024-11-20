@@ -28,29 +28,21 @@ public class CustomerDaoImpl implements CustomerDao {
 		this.sessionFactory = sessionFactory;
 	}
 	
-	@Override
-    @SuppressWarnings("unchecked") 
-    public List<Customer> searchCustomers(String keyword) {
-        if (keyword == null || keyword.trim().isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        Session session = sessionFactory.getCurrentSession();
-        
-        // Query không sử dụng generic type
-        String hql = "SELECT DISTINCT c FROM Customer c " +
-                    "INNER JOIN c.users u " +
-                    "WHERE LOWER(c.firstName) LIKE LOWER(:keyword) " +
-                    "OR LOWER(c.lastName) LIKE LOWER(:keyword) " +
-                    "OR LOWER(u.emailId) LIKE LOWER(:keyword) " +
-                    "OR LOWER(c.customerPhone) LIKE LOWER(:keyword)";
-        
+	public List<Customer> searchCustomers(String searchTerm) {
+        Session session = sessionFactory.openSession();
         try {
-            Query query = session.createQuery(hql);
-            query.setParameter("keyword", "%" + keyword.trim() + "%");
-            return query.list();  // Sử dụng list() thay vì getResultList()
-        } catch (Exception e) {
-            throw new RuntimeException("Error searching customers: " + e.getMessage());
+            // Create query that searches in both customer name and user email
+            Query query = session.createQuery(
+                "from Customer c where lower(c.firstName) like lower(:searchTerm) " +
+                "or lower(c.lastName) like lower(:searchTerm) " +  
+                "or lower(c.users.emailId) like lower(:searchTerm)");
+            
+            query.setParameter("searchTerm", "%" + searchTerm + "%");
+            
+            List<Customer> results = query.list();
+            return results;
+        } finally {
+            session.close();
         }
     }
 

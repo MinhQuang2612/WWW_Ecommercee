@@ -33,12 +33,8 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerDao.getCustomerByemailId(emailId);
 	}
 	
-	 @Override
-	    public List<Customer> searchCustomers(String keyword) {
-	        if (keyword == null || keyword.trim().isEmpty()) {
-	            return getAllCustomers();
-	        }
-	        return customerDao.searchCustomers(keyword);
-	    }
+	public List<Customer> searchCustomers(String searchTerm) {
+        return customerDao.searchCustomers(searchTerm);
+    }
 
 }

@@ -52,29 +52,28 @@ public class UserController {
 	    return new ModelAndView("UserList", "customers", customers); 
 	}
 	
-	@RequestMapping(value = "/searchUsers", method = RequestMethod.GET)
-    public String searchUsers(@RequestParam(value = "searchKeyword", required = false) String keyword, 
-                            Model model) {
-        try {
-            List<Customer> searchResults = customerService.searchCustomers(keyword);
-            
-            if (searchResults.isEmpty()) {
-                model.addAttribute("message", "No users found for: " + keyword);
-            } else {
-                model.addAttribute("message", searchResults.size() + " user(s) found");
-            }
-            
-            model.addAttribute("customers", searchResults);
-            model.addAttribute("searchKeyword", keyword);
-            
-            return "UserList";
-            
-        } catch (Exception e) {
-            model.addAttribute("errorMessage", "An error occurred while searching: " + e.getMessage());
-            model.addAttribute("customers", customerService.getAllCustomers());
-            return "UserList";
-        }
-    }
+	 @RequestMapping(value = "/admin/user/searchUsers", method = RequestMethod.GET)
+	    public ModelAndView searchUsers(@RequestParam("searchKeyword") String searchKeyword) {
+	        ModelAndView modelAndView = new ModelAndView("UserList");
+	        
+	        if (searchKeyword == null || searchKeyword.trim().isEmpty()) {
+	            modelAndView.addObject("searchError", "Please enter a search keyword");
+	            // Vẫn hiển thị tất cả customers khi không có từ khóa
+	            modelAndView.addObject("customers", customerService.getAllCustomers());
+	            return modelAndView;
+	        }
+
+	        List<Customer> customers = customerService.searchCustomers(searchKeyword);
+	        
+	        if (customers.isEmpty()) {
+	            modelAndView.addObject("searchMessage", "No results found for: " + searchKeyword);
+	        } else {
+	            modelAndView.addObject("searchMessage", "Found " + customers.size() + " results for: " + searchKeyword);
+	        }
+	        
+	        modelAndView.addObject("customers", customers);
+	        return modelAndView;
+	    }
 
 	@RequestMapping(value = "/customer/registration")
 	public ModelAndView getRegistrationForm() {
