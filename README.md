@@ -28,4 +28,4 @@
 
 * **Technology** : Bootstrap, Java, Spring MVC, Hibernate, JSP, Maven.
 * **Application Servicer**: Apache Tomcat Server.
-* **Database** : MSSQL Database (In memory database)
+* **Database** : MSSQL Database.
