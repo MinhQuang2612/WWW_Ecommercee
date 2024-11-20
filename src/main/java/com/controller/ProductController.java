@@ -49,40 +49,39 @@ public class ProductController {
 		this.productService = productService;
 	}
 	
-//	@RequestMapping("/productGrid")
-//    public String showProductGrid(Model model) {
-//        List<Product> products = productService.getFeaturedProducts(5); // Lấy 5 sản phẩm để hiển thị
-//        model.addAttribute("products", products);
-//        return "productGrid";
-//    }
-
-	// Configuration for MultiPartResolver
-	// Multipart resolver is for uploading images and other media
-	// maxupload size is for image size should not be maximum than 10240000
-	
 	@RequestMapping(value = "/searchProducts", method = RequestMethod.GET)
-    public String searchProducts(@RequestParam(value = "searchKeyword", required = false) String keyword, Model model) {
-        try {
-            if (keyword != null && !keyword.trim().isEmpty()) {
-                List<Product> searchResults = productService.searchProducts(keyword);
-                if (searchResults.isEmpty()) {
-                    model.addAttribute("msg", "No products found for: " + keyword);
-                }
-                model.addAttribute("products", searchResults);
-            } else {
-                // Nếu không có keyword, hiển thị tất cả sản phẩm
-                List<Product> allProducts = productService.getAllProducts();
-                model.addAttribute("products", allProducts);
-            }
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            // Trong trường hợp lỗi, hiển thị tất cả sản phẩm
-            List<Product> allProducts = productService.getAllProducts();
-            model.addAttribute("products", allProducts);
-        }
-        
-        return "productList";
-    }
+	public String searchProducts(@RequestParam(value = "searchKeyword", required = false) String keyword, Model model) {
+	    List<Product> products;
+
+	    try {
+	        if (keyword == null || keyword.trim().isEmpty()) {
+	            // Thêm thông báo yêu cầu nhập thông tin tìm kiếm
+	            model.addAttribute("msg", "Vui lòng nhập thông tin tìm kiếm.");
+
+	            // Nếu không có từ khóa, trả về toàn bộ sản phẩm
+	            products = productService.getAllProducts();
+	        } else {
+	            // Tìm kiếm sản phẩm với từ khóa
+	            products = productService.searchProducts(keyword);
+	            if (products.isEmpty()) {
+	                model.addAttribute("msg", "No products found for: " + keyword);
+	            }
+	        }
+	        // Thêm danh sách sản phẩm vào model
+	        model.addAttribute("products", products);
+	        // Thêm từ khóa vào model để hiển thị lại trong ô tìm kiếm
+	        model.addAttribute("searchKeyword", keyword);
+	    } catch (Exception e) {
+	        // Xử lý lỗi
+	        model.addAttribute("errorMessage", "An error occurred while searching: " + e.getMessage());
+	        // Hiển thị tất cả sản phẩm nếu có lỗi
+	        products = productService.getAllProducts();
+	        model.addAttribute("products", products);
+	    }
+
+	    return "productList";
+	}
+
 
 	@Bean
 	public MultipartResolver multipartResolver() {

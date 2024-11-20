@@ -46,7 +46,7 @@ public class ProductDaoImpl implements ProductDao {
 	@Override
 	public List<Product> searchProducts(String keyword) {
 	    if (keyword == null || keyword.trim().isEmpty()) {
-	        return new ArrayList<>(); // Trả về danh sách trống nếu keyword không hợp lệ
+	        return new ArrayList<>(); 
 	    }
 
 		Session session = sessionFactory.openSession();

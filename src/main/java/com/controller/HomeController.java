@@ -47,23 +47,24 @@ public class HomeController {
 	
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public ModelAndView searchProducts(@RequestParam(value = "searchTerm", required = false) String keyword) {
+	    ModelAndView mav = new ModelAndView("index1");
+
 	    // Kiểm tra nếu searchTerm rỗng
 	    if (keyword == null || keyword.trim().isEmpty()) {
-	        // Nếu rỗng, trả về thông báo lỗi
-	        ModelAndView mav = new ModelAndView("index1");
-	        mav.addObject("errorMessage", "Vui lòng nhập từ khóa tìm kiếm.");
-	        return mav;
+	        // Trả về danh sách đầy đủ sản phẩm
+	        List<Product> allProducts = productService.getAllProducts();
+	        mav.addObject("products", allProducts);
+	        mav.addObject("errorMessage", "Vui lòng nhập từ khóa tìm kiếm."); // Thêm thông báo lỗi
+	    } else {
+	        // Xử lý tìm kiếm với từ khóa
+	        List<Product> products = productService.searchProducts(keyword);
+	        mav.addObject("products", products);
+	        mav.addObject("searchKeyword", keyword);
 	    }
 
-	    // Xử lý tìm kiếm
-	    List<Product> products = productService.searchProducts(keyword);
-
-	    // Trả về trang index1 với kết quả tìm kiếm
-	    ModelAndView mav = new ModelAndView("index1");
-	    mav.addObject("products", products);
-	    mav.addObject("searchKeyword", keyword);
 	    return mav;
 	}
+
 	
 	@RequestMapping(value = "/changePassword", method = RequestMethod.GET)
 	public String getChangePassword() {
@@ -147,15 +148,23 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/contactus", method = RequestMethod.POST)
-	public String addQuery(@Valid @ModelAttribute(value = "contact") Queries query, Model model, BindingResult result) {
+    public String addQuery(@Valid @ModelAttribute(value = "contact") Queries query, Model model, BindingResult result) {
 
-		if (result.hasErrors())
-			return "contactUs";
+        // Nếu form có lỗi xác thực, trả lại trang liên hệ và giữ nguyên dữ liệu đã nhập
+        if (result.hasErrors()) {
+            return "contactUs";
+        }
 
-		queryService.addQuery(query);
-		model.addAttribute("querySuccess",
-				"Thank you, Your Message stored in our Server we will contact through corresponding Mail");
-		return "login";
+        // Lưu thông tin liên hệ vào cơ sở dữ liệu hoặc xử lý khác
+        queryService.addQuery(query);
 
-	}
+        // Thêm thông báo thành công
+        model.addAttribute("querySuccess", "Thank you! Your message has been received. We will contact you soon.");
+
+        // Clear form bằng cách tạo đối tượng mới
+        model.addAttribute("contact", new Queries());
+
+        // Trả về lại trang liên hệ
+        return "contactUs";
+    }
 }

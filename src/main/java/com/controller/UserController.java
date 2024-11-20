@@ -74,6 +74,8 @@ public class UserController {
 	        modelAndView.addObject("customers", customers);
 	        return modelAndView;
 	    }
+	 
+	 
 
 	@RequestMapping(value = "/customer/registration")
 	public ModelAndView getRegistrationForm() {

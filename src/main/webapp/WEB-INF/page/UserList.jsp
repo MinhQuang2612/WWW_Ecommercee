@@ -87,8 +87,14 @@
 						<td>${customer.users.emailId}</td>
 
 
-						<td><a href="user/delete/${customer.users.userId}"> <span
-								class="glyphicon glyphicon-trash"></span></a></td>
+						<td><a
+							href="${pageContext.request.contextPath}/admin/user/edit/${customer.users.userId}">
+								<span class="glyphicon glyphicon-edit"></span>
+						</a> <a href="user/delete/${customer.users.userId}"> <span
+								class="glyphicon glyphicon-trash"></span>
+						</a></td>
+
+
 					</tr>
 				</c:forEach>
 			</tbody>

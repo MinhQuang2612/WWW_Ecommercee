@@ -49,8 +49,7 @@
 		<form method="get" action="searchProducts" class="form-inline"
 			id="searchForm" style="margin-bottom: 20px;">
 			<input type="text" name="searchKeyword" class="form-control"
-				placeholder="Search by Name or Manufacturer" style="width: 300px;"
-				required minlength="1">
+				placeholder="Search by Name or Manufacturer" style="width: 300px;">
 			<button type="submit">Search</button>
 		</form>
 
@@ -104,8 +103,8 @@
 								access="hasAnyRole('ROLE_USER')">
 								<a href="#" ng-click="addToCart(${prod.productId})"
 									class="btn btn-primary" style="margin-left: 5px"> <span
-									class="glyphicon glyphicon-shopping-cart"></span>
-									{{ processingButtons[${prod.productId}] ? 'Đang xử lý...' : '' }}
+									class="glyphicon glyphicon-shopping-cart"></span> {{
+									processingButtons[${prod.productId}] ? 'Đang xử lý...' : '' }}
 								</a>
 							</security:authorize> <!-- 						view only to the admin --> <security:authorize
 								access="hasAnyRole('ROLE_ADMIN')">
