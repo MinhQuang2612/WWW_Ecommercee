@@ -17,7 +17,7 @@
 	<div class="jumbotron">
 		<div class="container">
 			<br>
-			<div id="myCarousel" class="carousel slide" data-ride="carousel">
+			<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="3000">
 				<!-- Indicators -->
 				<ol class="carousel-indicators">
 					<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -30,7 +30,7 @@
 				<!-- Wrapper for slides -->
 				<div class="carousel-inner" role="listbox">
 					<div class="item active">
-						<img src="<c:url value="/resource/images/perfume1.avif"/>" alt="Image1"
+						<img src="<c:url value="/resource/images/perfume1.jpg"/>" alt="Image1"
 							width="1000" height="345">
 					</div>
 
@@ -45,7 +45,7 @@
 					</div>
 
 					<div class="item">
-						<img src="<c:url value="/resource/images/perfume4.avif"/>"
+						<img src="<c:url value="/resource/images/perfume4.jpg"/>"
 							alt="Image4" width="1000" height="345">
 					</div>
 

@@ -12,29 +12,18 @@
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/header.css">
 <style type="text/css">
-@media ( min-width : 1200px) .container {
-	width
-	:
-		
-	1300
-	px
-		
-	;
-}
-
-@media ( min-width : 992px) .col-md-4 {
-	margin-left
-		
-	:
-	330px
-		
-	;
-}
+	@media ( min-width : 1200px) .container {
+		width: 1300px;
+	}
+	
+	@media ( min-width : 992px) .col-md-4 {
+		margin-left: 330px;
+	}
 </style>
 </head>
 <body>
 	<%@ include file="navbar.jsp"%>
-	<div class="container" style="margin-top: 30px; margin-bottom: 180px;">
+	<div class="container" style="margin-top: 50px; margin-bottom: 180px; margin-left: 500px;">
 		<div class="col-md-4">
 			<div class="login-panel panel panel-default">
 				<div class="panel-heading">

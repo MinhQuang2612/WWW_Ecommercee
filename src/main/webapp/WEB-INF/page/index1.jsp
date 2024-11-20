@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>ShopIeasy</title>
+    <title>Perfume</title>
     <link rel="icon" type="image/x-icon" href="<c:url value='/resource/images/favicon1.png'/>" />
 </head>
 <body>
