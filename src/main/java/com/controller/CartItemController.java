@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.model.Cart;
@@ -70,7 +71,7 @@ public class CartItemController {
 
 	@RequestMapping("/cart/add/{productId}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void addCartItem(@PathVariable(value = "productId") Long productId) {
+	public void addCartItem(@PathVariable(value = "productId") Long productId, @RequestParam(value = "quantity", required = false) Integer quantity) {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String emailId = user.getUsername();
 		Customer customer = customerService.getCustomerByemailId(emailId);
@@ -82,7 +83,13 @@ public class CartItemController {
 		for (int i = 0; i < cartItems.size(); i++) {
 			CartItem cartItem = cartItems.get(i);
 			if (product.getProductId().equals(cartItem.getProduct().getProductId())) {
-				cartItem.setQuality(cartItem.getQuality() + 1);
+				if( quantity == null ) {
+					cartItem.setQuality(cartItem.getQuality() + 1);
+				}
+				else
+				{
+					cartItem.setQuality(quantity);
+				}
 				cartItem.setPrice(cartItem.getQuality() * cartItem.getProduct().getProductPrice());
 				cartItemService.addCartItem(cartItem);
 				return;

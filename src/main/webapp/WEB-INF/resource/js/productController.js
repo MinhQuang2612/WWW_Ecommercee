@@ -5,6 +5,7 @@ var app = angular.module("myapp", []).controller(
 			var BASE_PATH = "http://localhost:8080";
 
 			$scope.processingButtons = {};
+			$scope.quantityButtons = {};
 
 			$scope.getProductList = function() {
 				$http.get(BASE_PATH + "/getProductsList")
@@ -50,6 +51,18 @@ var app = angular.module("myapp", []).controller(
 								+ cartItemId).success(function() {
 					$scope.refreshCart();
 				});
+			}
+
+			$scope.changeQuantity = function(productId, cartItemId, event) {
+				$scope.quantityButtons[productId] = true;
+				var quantity = $(event.currentTarget).prev().val();
+
+				$http.put(BASE_PATH + "/cart/add/" + productId + "?quantity=" + quantity)
+					.success(function() {
+						$scope.refreshCart();
+						$scope.quantityButtons[productId] = false;
+						alert('Update successfully');
+					})
 			}
 
 			$scope.clearCart = function() {

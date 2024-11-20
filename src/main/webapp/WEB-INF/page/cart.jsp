@@ -57,7 +57,14 @@
 						<tr ng-repeat="cart in carts.cartItem">
 							<td style="width: 171px"><img style="width: 100px; height: 90px;" src="<c:url value="/resource/images/products/{{cart.product.productId}}.png"/>" /></td>
 							<td>{{cart.product.productName}}</td>
-							<td>{{cart.quality}}</td>
+							<td>
+								<div class="" style="display: flex; align-items: center;">
+									<input type="text" name="quantity" class="form-control input-number" style="width: 50px; text-align: center" value="{{cart.quality}}" min="1" max="100">
+									<button ng-disabled="quantityButtons[cart.product.productId]" ng-click="changeQuantity(cart.product.productId, cart.cartItemId, $event)" type="button" class="quantity-right-plus btn btn-success btn-number" style="margin-top: 0px; margin-left: 0px;" data-type="plus" data-field="">
+										<span class="glyphicon glyphicon-check"></span>
+									</button>
+								</div>
+							</td>
 							<td>{{cart.product.productPrice}}</td>
 							<td>{{cart.price}}</td>
 							<td><a href="#" class="btn btn-danger"
