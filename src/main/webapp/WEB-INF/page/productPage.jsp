@@ -18,7 +18,7 @@
 <script src="<c:url value="/resource/js/productController.js"/>"></script>
 </head>
 <body>
-	<div ng-app="myapp">
+	<div ng-app="myapp" style="margin-top: 25px; margin-bottom:15px;">
 		<div class="container" style="width: 829px">
 			<h2>Product Details</h2>
 			<p>Details of the Product</p>

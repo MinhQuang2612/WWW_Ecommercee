@@ -112,7 +112,7 @@ a.btn:hover {
 	<!-- Content -->
 	<div class="row"
 		style="margin-top: 4px; margin-right: 0px; margin-left: 0px; margin-bottom: 19px">
-		<div class="col-sm-4" style="margin-top: 0px">
+		<div class="col-sm-4" style="margin-top: 25px">
 			<div class="container-fluid bg-1 text-center">
 				<h3>Who Am I?</h3>
 				<img src="<c:url value="/resource/images/aboutImage.png"/>"

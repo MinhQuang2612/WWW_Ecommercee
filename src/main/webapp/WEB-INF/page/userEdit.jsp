@@ -12,7 +12,7 @@
     <script src="<c:url value="/resource/bootstrap/js/bootstrap.min.js"/>"></script>
 </head>
 <body>
-    <div class="container" style="width: 800px; margin-top: 50px;">
+    <div class="container" style="width: 800px; margin-top: 30px; margin-bottom:20px;">
         <div class="panel panel-primary">
             <!-- Thông báo -->
             <c:if test="${not empty errorMessage}">
@@ -82,6 +82,7 @@
             </div>
         </div>
     </div>
+    <%@ include file="footer.jsp"%>
 
     <script>
     function validateForm() {
