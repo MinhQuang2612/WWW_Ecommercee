@@ -14,6 +14,13 @@
 <body>
     <div class="container" style="width: 800px; margin-top: 50px;">
         <div class="panel panel-primary">
+            <!-- Thông báo -->
+            <c:if test="${not empty errorMessage}">
+                <p style="color: red; padding: 5px;">${errorMessage}</p>
+            </c:if>
+            <c:if test="${not empty infoMessage}">
+                <p style="color: green; padding: 5px;">${infoMessage}</p>
+            </c:if>
             <div class="panel-heading">
                 <h3 class="panel-title">Edit User Information</h3>
             </div>

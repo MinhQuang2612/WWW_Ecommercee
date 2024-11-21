@@ -4,6 +4,10 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.model.*;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,12 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.model.BillingAddress;
-import com.model.Customer;
-import com.model.ShippingAddress;
-import com.model.User;
 import com.service.CustomerService;
 import com.service.UserService;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class UserController {
@@ -29,6 +30,9 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private SessionFactory sessionFactory;
 
 	public UserService getUserService() {
 		return userService;
@@ -102,12 +106,63 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/admin/user/edit", method = RequestMethod.GET)
-	public ModelAndView editUser(@RequestParam("userId") Long userId) {
+	public ModelAndView editUser(@RequestParam("userId") Long userId, Model model) {
 	    // Lấy thông tin customer theo userId
 	    Customer customer = customerService.getCustomerByUserId(userId);
+
+		String infoMessage = (String) model.asMap().get("infoMessage");
+		String errorMessage = (String) model.asMap().get("errorMessage");
 	    
 	    ModelAndView modelAndView = new ModelAndView("userEdit");
 	    modelAndView.addObject("customer", customer);
+		modelAndView.addObject("infoMessage", infoMessage);
+		modelAndView.addObject("errorMessage", errorMessage);
 	    return modelAndView;
+	}
+
+	@RequestMapping(value = "/admin/user/update", method = RequestMethod.POST)
+	public String updateUser(
+			@RequestParam(value = "userId") Long userId,
+			@RequestParam(value = "firstName") String firstName,
+			@RequestParam(value = "lastName") String lastName,
+			@RequestParam(value = "email") String email,
+			@RequestParam(value = "phone") String phone,
+			@RequestParam(value = "address") String address,
+			@RequestParam(value = "city") String city,
+			@RequestParam(value = "state") String state,
+			RedirectAttributes redirectAttributes
+	) {
+
+		Customer customerMail = customerService.getCustomerByemailId(email);
+		if( customerMail != null && customerMail.getUsers().getUserId() != userId ) {
+			redirectAttributes.addFlashAttribute("errorMessage", "Email already in use");
+			return "redirect:/admin/user/edit?userId=" + userId;
+		}
+		Session session = sessionFactory.openSession();
+
+		// Lấy thông tin customer theo userId
+		Customer customer = customerService.getCustomerByUserId(userId);
+		String oldEmail = customer.getUsers().getEmailId();
+		customer.getUsers().setEmailId(email);
+		customer.setFirstName(firstName);
+		customer.setLastName(lastName);
+		customer.setCustomerPhone(phone);
+		customer.getBillingAddress().setAddress(address);
+		customer.getBillingAddress().setCity(city);
+		customer.getBillingAddress().setState(state);
+
+		Query query = session.createQuery("from Authorities where emailId=?");
+		query.setString(0, oldEmail);
+		Authorities authorities = (Authorities)query.uniqueResult();
+		authorities.setEmailId(email);
+
+		session.save(authorities);
+		session.saveOrUpdate(customer);
+		session.flush();
+		session.close();
+
+		redirectAttributes.addFlashAttribute("infoMessage", "Update info successful");
+
+		return "redirect:/admin/user/edit?userId=" + userId;
 	}
 }
