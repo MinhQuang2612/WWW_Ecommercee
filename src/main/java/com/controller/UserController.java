@@ -100,4 +100,14 @@ public class UserController {
 		model.addAttribute("registrationSuccess", "Registered Successfully. Login using username and password");
 		return "login";
 	}
+	
+	@RequestMapping(value = "/admin/user/edit", method = RequestMethod.GET)
+	public ModelAndView editUser(@RequestParam("userId") Long userId) {
+	    // Lấy thông tin customer theo userId
+	    Customer customer = customerService.getCustomerByUserId(userId);
+	    
+	    ModelAndView modelAndView = new ModelAndView("userEdit");
+	    modelAndView.addObject("customer", customer);
+	    return modelAndView;
+	}
 }

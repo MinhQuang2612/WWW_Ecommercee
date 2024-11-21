@@ -13,5 +13,7 @@ public interface CustomerService {
 	public Customer getCustomerByemailId(String emailId);
 
 	public List<Customer> searchCustomers(String searchTerm);
+	
+	public Customer getCustomerByUserId(Long userId);
 
 }

@@ -14,6 +14,6 @@ public interface CustomerDao {
 
 	public List<Customer> searchCustomers(String searchTerm);
 
-	
+	public Customer getCustomerByUserId(Long userId);
 
 }

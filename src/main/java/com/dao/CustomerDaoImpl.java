@@ -85,5 +85,15 @@ public class CustomerDaoImpl implements CustomerDao {
 		return customer;
 	}
 	
-	
+	public Customer getCustomerByUserId(Long userId) {
+	    Session session = sessionFactory.openSession();
+	    try {
+	        Query query = session.createQuery("from Customer c where c.users.userId = :userId");
+	        query.setParameter("userId", userId);
+	        return (Customer) query.uniqueResult();
+	    } finally {
+	        session.close();
+	    }
+	}
+
 }

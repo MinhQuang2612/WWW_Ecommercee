@@ -36,5 +36,9 @@ public class CustomerServiceImpl implements CustomerService {
 	public List<Customer> searchCustomers(String searchTerm) {
         return customerDao.searchCustomers(searchTerm);
     }
+	
+	public Customer getCustomerByUserId(Long userId) {
+        return customerDao.getCustomerByUserId(userId);
+    }
 
 }
