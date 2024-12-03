@@ -1,5 +1,8 @@
 package com.dao;
 
+import java.util.List;
+
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +24,16 @@ public class CustomerOrderDaoImpl implements CustomerOrderDao {
 		session.flush();
 		session.close();
 	}
+	
+	@Override
+    public List<CustomerOrder> getOrderHistoryByCustomerId(Long customerId) {
+        Session session = sessionFactory.openSession();
+        
+        Query query = session.createQuery("FROM CustomerOrder co WHERE co.customer.customerId = :customerId ORDER BY co.customerOrderId DESC");
+        query.setParameter("customerId", customerId);
+        
+        // Return the list of customer orders
+        return query.list();
+    }
 
 }

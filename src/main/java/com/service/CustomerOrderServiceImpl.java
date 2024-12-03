@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dao.CustomerOrderDao;
 import com.model.Cart;
@@ -33,5 +34,9 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 		}
 		return grandTotal;
 	}
-
+	
+	@Transactional
+	public List<CustomerOrder> getOrderHistoryByCustomerId(Long customerId) {
+        return customerOrderDao.getOrderHistoryByCustomerId(customerId);
+    }
 }

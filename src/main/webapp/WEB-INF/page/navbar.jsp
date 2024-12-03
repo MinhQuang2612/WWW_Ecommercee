@@ -11,9 +11,9 @@
 	href="<c:url value='/resource/bootstrap/css/bootstrap.min.css'/>">
 <script src="<c:url value='/resource/js/jquery.js'/>"></script>
 <script src="<c:url value='/resource/bootstrap/js/bootstrap.min.js'/>"></script>
-	<script
-			src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-	<script src="<c:url value="/resource/js/productController.js"/>"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="<c:url value="/resource/js/productController.js"/>"></script>
 <style>
 /* Tổng quan */
 body {
@@ -129,34 +129,33 @@ body {
 }
 
 .dropdown-menu.dropdown-menu-right {
-    background-color: #1a1a2e;  /* Màu giống navbar */
-    min-width: 160px;          /* Chiều ngang gọn hơn */
-    padding: 5px 0;
-    margin-top: 5px;           /* Khoảng cách với nút Account */
-    border: 1px solid #2c1e4d; /* Viền để phân biệt với nền */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+	background-color: #1a1a2e; /* Màu giống navbar */
+	min-width: 160px; /* Chiều ngang gọn hơn */
+	padding: 5px 0;
+	margin-top: 5px; /* Khoảng cách với nút Account */
+	border: 1px solid #2c1e4d; /* Viền để phân biệt với nền */
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.dropdown-menu.dropdown-menu-right > li > a {
-    color: white;             /* Màu chữ trắng */
-    padding: 8px 15px;        /* Padding cho các mục menu */
-    font-size: 14px;
+.dropdown-menu.dropdown-menu-right>li>a {
+	color: white; /* Màu chữ trắng */
+	padding: 8px 15px; /* Padding cho các mục menu */
+	font-size: 14px;
 }
 
-.dropdown-menu.dropdown-menu-right > li > a:hover {
-    background-color: #007bff; /* Màu khi hover giống với navbar */
-    color: white;
+.dropdown-menu.dropdown-menu-right>li>a:hover {
+	background-color: #007bff; /* Màu khi hover giống với navbar */
+	color: white;
 }
 
 /* Căn chỉnh icon trong dropdown */
-.dropdown-menu.dropdown-menu-right > li > a > span {
-    margin-right: 8px;
+.dropdown-menu.dropdown-menu-right>li>a>span {
+	margin-right: 8px;
 }
 
 .cart-item:hover {
 	color: #FFF;
 }
-
 </style>
 </head>
 <body ng-app="myapp" ng-controller="myController" ng-init="getCart(1)">
@@ -180,12 +179,12 @@ body {
 		<div class="user-actions">
 			<c:if test="${!empty pageContext.request.userPrincipal.name}">
 				<span>Welcome, <strong>${pageContext.request.userPrincipal.name}</strong></span>
-				<a class="cart-item" href="<c:url value='/cart/getCartById'/>" style="position: relative">
-					<div id="total-item" style="z-index: 10000; width: 20px; height: 20px; border-radius: 10px; background-color: blue; font-size: 12px; display: flex; justify-content: center; align-items: center; position: absolute; left: -10px; top: -5px">
+				<a class="cart-item" href="<c:url value='/cart/getCartById'/>"
+					style="position: relative">
+					<div id="total-item"
+						style="z-index: 10000; width: 20px; height: 20px; border-radius: 10px; background-color: blue; font-size: 12px; display: flex; justify-content: center; align-items: center; position: absolute; left: -10px; top: -5px">
 
-					</div>
-					<span
-					class="glyphicon glyphicon-shopping-cart"></span> Cart
+					</div> <span class="glyphicon glyphicon-shopping-cart"></span> Cart
 				</a>
 				<div class="dropdown" style="display: inline-block;">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"
@@ -197,11 +196,15 @@ body {
 						<li><a href="<c:url value='/changePassword'/>"> <span
 								class="glyphicon glyphicon-lock"></span> Change Password
 						</a></li>
+						<li><a href="<c:url value='/orderHistory'/>"> <span
+								class="glyphicon glyphicon-list-alt"></span> View Order History
+						</a></li>
 						<li><a href="<c:url value='/logout'/>"> <span
 								class="glyphicon glyphicon-log-out"></span> Logout
 						</a></li>
 					</ul>
 				</div>
+
 			</c:if>
 			<c:if test="${pageContext.request.userPrincipal.name == null}">
 				<a href="<c:url value='/login'/>"> <span

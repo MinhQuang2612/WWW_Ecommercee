@@ -1,12 +1,11 @@
 package com.controller;
 
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.validation.Valid;
 
-import com.dao.UserDao;
-import com.dao.UserDaoImpl;
-import com.model.Customer;
-import com.model.Product;
-import com.service.ProductService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +20,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.dao.UserDao;
+import com.model.Customer;
+import com.model.CustomerOrder;
+import com.model.Product;
 import com.model.Queries;
+import com.service.CustomerOrderService;
+import com.service.CustomerService;
+import com.service.ProductService;
 import com.service.QueriesService;
-
-import java.util.List;
-import java.util.regex.*;
 
 @Controller
 public class HomeController {
@@ -34,38 +37,63 @@ public class HomeController {
 	private ProductService productService;
 
 	@Autowired
+	private CustomerOrderService customerOrderService;
+
+	@Autowired
+	private CustomerService customerService;
+
+	@Autowired
 	private UserDao userDao;
 
 	@Autowired
 	private SessionFactory sessionFactory;
-
-	@RequestMapping({"/", "/index", "/index1" })
-	public ModelAndView sayIndex() {
-		List<Product> products = productService.getAllProducts(); return new
-				ModelAndView("index1", "products", products);
-	}
 	
+	@RequestMapping("/orderHistory")
+    public String viewOrderHistory(Model model) {
+        // Lấy thông tin người dùng đã đăng nhập
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String email = user.getUsername();
+        
+        // Lấy thông tin khách hàng từ email
+        Customer customer = customerService.getCustomerByemailId(email);
+        
+        if (customer != null) {
+            // Lấy lịch sử đơn hàng từ service
+            List<CustomerOrder> orderHistory = customerOrderService.getOrderHistoryByCustomerId(customer.getCustomerId());
+            
+            // Thêm lịch sử đơn hàng vào model để hiển thị trên view
+            model.addAttribute("orderHistory", orderHistory);
+        }
+        
+        return "orderHistory"; 
+    }
+
+	@RequestMapping({ "/", "/index", "/index1" })
+	public ModelAndView sayIndex() {
+		List<Product> products = productService.getAllProducts();
+		return new ModelAndView("index1", "products", products);
+	}
+
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public ModelAndView searchProducts(@RequestParam(value = "searchTerm", required = false) String keyword) {
-	    ModelAndView mav = new ModelAndView("index1");
+		ModelAndView mav = new ModelAndView("index1");
 
-	    // Kiểm tra nếu searchTerm rỗng
-	    if (keyword == null || keyword.trim().isEmpty()) {
-	        // Trả về danh sách đầy đủ sản phẩm
-	        List<Product> allProducts = productService.getAllProducts();
-	        mav.addObject("products", allProducts);
-	        mav.addObject("errorMessage", "Vui lòng nhập từ khóa tìm kiếm."); // Thêm thông báo lỗi
-	    } else {
-	        // Xử lý tìm kiếm với từ khóa
-	        List<Product> products = productService.searchProducts(keyword);
-	        mav.addObject("products", products);
-	        mav.addObject("searchKeyword", keyword);
-	    }
+		// Kiểm tra nếu searchTerm rỗng
+		if (keyword == null || keyword.trim().isEmpty()) {
+			// Trả về danh sách đầy đủ sản phẩm
+			List<Product> allProducts = productService.getAllProducts();
+			mav.addObject("products", allProducts);
+			mav.addObject("errorMessage", "Vui lòng nhập từ khóa tìm kiếm."); // Thêm thông báo lỗi
+		} else {
+			// Xử lý tìm kiếm với từ khóa
+			List<Product> products = productService.searchProducts(keyword);
+			mav.addObject("products", products);
+			mav.addObject("searchKeyword", keyword);
+		}
 
-	    return mav;
+		return mav;
 	}
 
-	
 	@RequestMapping(value = "/changePassword", method = RequestMethod.GET)
 	public String getChangePassword() {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -75,28 +103,27 @@ public class HomeController {
 	// to insert the data
 	@RequestMapping(value = "/changePassword", method = RequestMethod.POST)
 	public String changePassword(Model model, @RequestParam("currentPassword") String currentPassword,
-								 @RequestParam("newPassword") String newPassword,
-								 @RequestParam("confirmPassword") String confirmPassword) {
-		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			@RequestParam("newPassword") String newPassword, @RequestParam("confirmPassword") String confirmPassword) {
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		com.model.User u = userDao.getUserByEmail(user.getUsername());
 //		u.setPassword(newPassword);
 
-		if(!u.getPassword().equals(currentPassword)) {
+		if (!u.getPassword().equals(currentPassword)) {
 			model.addAttribute("errorMsg", "Mật khẩu hiện tại không chính xác");
 			return "changePassword";
 		}
 
-		if(!newPassword.equals(confirmPassword)) {
+		if (!newPassword.equals(confirmPassword)) {
 			model.addAttribute("errorMsg", "Mật khẩu xác nhận không chính xác");
 			return "changePassword";
 		}
 
-		if(newPassword == currentPassword) {
+		if (newPassword == currentPassword) {
 			model.addAttribute("errorMsg", "Mật khẩu mới giống mật khẩu hiện tại");
 			return "changePassword";
 		}
 
-		if(newPassword.length() < 8 || ! validatePassword(newPassword) ){
+		if (newPassword.length() < 8 || !validatePassword(newPassword)) {
 			model.addAttribute("errorMsg", "Mật khẩu quá yếu");
 			return "changePassword";
 		}
@@ -117,7 +144,7 @@ public class HomeController {
 		Matcher matcher = pattern.matcher(password);
 		return matcher.matches();
 	}
-	
+
 	@RequestMapping("/hello")
 	public ModelAndView sayHello() {
 		return new ModelAndView("hello", "hello", "Hello Mr.Ismail");
@@ -148,23 +175,23 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/contactus", method = RequestMethod.POST)
-    public String addQuery(@Valid @ModelAttribute(value = "contact") Queries query, Model model, BindingResult result) {
+	public String addQuery(@Valid @ModelAttribute(value = "contact") Queries query, Model model, BindingResult result) {
 
-        // Nếu form có lỗi xác thực, trả lại trang liên hệ và giữ nguyên dữ liệu đã nhập
-        if (result.hasErrors()) {
-            return "contactUs";
-        }
+		// Nếu form có lỗi xác thực, trả lại trang liên hệ và giữ nguyên dữ liệu đã nhập
+		if (result.hasErrors()) {
+			return "contactUs";
+		}
 
-        // Lưu thông tin liên hệ vào cơ sở dữ liệu hoặc xử lý khác
-        queryService.addQuery(query);
+		// Lưu thông tin liên hệ vào cơ sở dữ liệu hoặc xử lý khác
+		queryService.addQuery(query);
 
-        // Thêm thông báo thành công
-        model.addAttribute("querySuccess", "Thank you! Your message has been received. We will contact you soon.");
+		// Thêm thông báo thành công
+		model.addAttribute("querySuccess", "Thank you! Your message has been received. We will contact you soon.");
 
-        // Clear form bằng cách tạo đối tượng mới
-        model.addAttribute("contact", new Queries());
+		// Clear form bằng cách tạo đối tượng mới
+		model.addAttribute("contact", new Queries());
 
-        // Trả về lại trang liên hệ
-        return "contactUs";
-    }
+		// Trả về lại trang liên hệ
+		return "contactUs";
+	}
 }
