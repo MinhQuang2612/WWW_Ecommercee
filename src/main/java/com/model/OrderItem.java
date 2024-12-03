@@ -22,7 +22,7 @@ public class OrderItem implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderItemId;
 
-    private Long customerOrderId;
+//    private Long customerOrderId;
 
     private int quality;
 
@@ -32,13 +32,16 @@ public class OrderItem implements Serializable {
     @JoinColumn(name = "productId")
     private Product product;
 
-    public Long getCustomerOrderId() {
-        return this.customerOrderId;
+    @ManyToOne
+    @JoinColumn(name = "customerOrderId")
+    @JsonIgnore
+    private CustomerOrder customerOrder;
+
+    public void setCustomerOrder(CustomerOrder customerOrder) {
+        this.customerOrder = customerOrder;
     }
 
-    public void setCustomerOrderId(Long customerOrderId) {
-        this.customerOrderId = customerOrderId;
-    }
+    public CustomerOrder getCustomerOrder() {return customerOrder;}
 
     public int getQuality() {
         return quality;

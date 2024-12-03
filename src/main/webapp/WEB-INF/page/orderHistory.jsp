@@ -26,15 +26,15 @@ body {
     max-width: 1200px;
     margin: 50px auto;
     padding: 40px;
-    background-color: #1a1a2e;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+    /*background-color: #1a1a2e;*/
+    /*border-radius: 15px;*/
+    /*box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);*/
     flex: 1;
 }
 
 /* Tiêu đề của trang */
 .order-history-title {
-    color: #f8f9fa;
+    color: black;
     text-align: center;
     margin-bottom: 40px;
     font-size: 36px;
@@ -82,14 +82,14 @@ tr {
 }
 
 tr:hover {
-    transform: scale(1.02);
-    z-index: 1;
+    /*transform: scale(1.02);*/
+    /*z-index: 1;*/
 }
 
 td {
     background-color: transparent;
     color: #f8f9fa;
-    padding: 15px;
+    padding: 15px !important;
     text-align: center;
     font-size: 14px;
     border-right: 1px solid #555; /* Đảm bảo các ô cũng có đường viền */

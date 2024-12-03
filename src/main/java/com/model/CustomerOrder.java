@@ -1,14 +1,9 @@
 package com.model;
 
 import java.io.Serializable;
+import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "customerorder")
@@ -37,6 +32,12 @@ public class CustomerOrder implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "billingAddressId")
 	private BillingAddress billingAddress;
+
+	@OneToMany(mappedBy = "customerOrder", cascade = CascadeType.ALL,fetch=FetchType.LAZY)
+	private List<OrderItem> orderItem;
+
+	public void setOrderItem(List<OrderItem> orderItem) {this.orderItem = orderItem;}
+	public List<OrderItem> getOrderItem() {return orderItem;}
 
 	public BillingAddress getBillingAddress() {
 		return billingAddress;

@@ -60,7 +60,7 @@ public class CartItemDaoImpl implements CartItemDao {
 		OrderItem orderItem = new OrderItem();
 		for (CartItem cartItem : cartItems) {
 			removeCartItem(cartItem.getCartItemId());
-			orderItem.setCustomerOrderId(order.getCustomerOrderId());
+			orderItem.setCustomerOrder(order);
 			orderItem.setPrice(cartItem.getPrice());
 			orderItem.setQuality(cartItem.getQuality());
 			orderItem.setProduct(cartItem.getProduct());
