@@ -2,6 +2,7 @@ package com.dao;
 
 import java.io.IOException;
 
+import com.model.CustomerOrder;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,21 @@ public class CartDaoImpl implements CartDao {
 		}
 		update(cart);
 		return cart;
+	}
+
+	public CustomerOrder order(Long customerOrderId) throws IOException {
+		CustomerOrder order = getCustomerOrder(customerOrderId);
+		return order;
+	}
+
+	public CustomerOrder getCustomerOrder(Long orderId) {
+		Session session = sessionFactory.openSession();
+		CustomerOrder order = (CustomerOrder) session.get(CustomerOrder.class, orderId);
+		// System.out.println(cart.getCartId() + " " + cart.getCartItem());
+		System.out.println(order);
+		session.close();
+		return order;
+
 	}
 
 	public void update(Cart cart) {

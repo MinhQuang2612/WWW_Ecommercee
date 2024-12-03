@@ -2,8 +2,11 @@ package com.dao;
 
 import java.util.List;
 
+import com.model.CustomerOrder;
+import com.model.OrderItem;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,4 +54,34 @@ public class CartItemDaoImpl implements CartItemDao {
 		}
 	}
 
+	public void removeAllCartItemsOrder(CustomerOrder order) {
+		Cart cart = order.getCart();
+		List<CartItem> cartItems = cart.getCartItem();
+		OrderItem orderItem = new OrderItem();
+		for (CartItem cartItem : cartItems) {
+			removeCartItem(cartItem.getCartItemId());
+			orderItem.setCustomerOrderId(order.getCustomerOrderId());
+			orderItem.setPrice(cartItem.getPrice());
+			orderItem.setQuality(cartItem.getQuality());
+			orderItem.setProduct(cartItem.getProduct());
+			addOrderItem(orderItem);
+		}
+
+		order.setStatus(1);
+		saveOrder(order);
+	}
+
+	public void addOrderItem(OrderItem orderItem) {
+		Session session = sessionFactory.openSession();
+		session.save(orderItem);
+		session.flush();
+		session.close();
+	}
+
+	public void saveOrder(CustomerOrder order) {
+		Session session = sessionFactory.openSession();
+		session.update(order);
+		session.flush();
+		session.close();
+	}
 }

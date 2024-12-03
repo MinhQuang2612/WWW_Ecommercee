@@ -20,6 +20,8 @@ public class CustomerOrder implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long customerOrderId;
 
+	private Integer status;
+
 	@OneToOne
 	@JoinColumn(name = "cartId")
 	private Cart cart;
@@ -74,6 +76,14 @@ public class CustomerOrder implements Serializable {
 
 	public void setShippingAddress(ShippingAddress shippingAddress) {
 		this.shippingAddress = shippingAddress;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 }

@@ -9,9 +9,15 @@
     <action-state id="addCartToOrder">
         <evaluate expression="cartDaoImpl.validate(requestParameters.cartId)" result="order.cart" />
         <transition to="invalidCartWarning" on-exception="java.io.IOException" />
+        <transition to="addCustomerOrder" />
+    </action-state>
+
+    <action-state id="addCustomerOrder">
+        <evaluate expression="cartDaoImpl.order(requestParameters.customerOrderId)" result="order" />
+        <transition to="invalidCartWarning" on-exception="java.io.IOException" />
         <transition to="collectCustomerInfo" />
     </action-state>
- 
+
     <view-state id="collectCustomerInfo" view="collectCustomerInfo.jsp" model="order">
         <transition on="customerInfoCollected" to="collectShippingDetail" />
     </view-state>
@@ -22,12 +28,12 @@
     </view-state>
 
      <view-state id="orderConfirmation"> 
-         <transition on="orderConfirmed" to="processOrder" /> 
+         <transition on="orderConfirmed" to="processOrder" />
          <transition on="backToCollectShippingDetail" to="collectShippingDetail" /> 
      </view-state> 
 
     <action-state id="processOrder">
-        <evaluate expression="cartItemDaoImpl.removeAllCartItems(order.cart)" />
+        <evaluate expression="cartItemDaoImpl.removeAllCartItemsOrder(order)" />
         <transition to="thankCustomer" />
     </action-state>
 

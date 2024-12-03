@@ -55,6 +55,7 @@
 				<value>com.model.ShippingAddress</value>
 				<value>com.model.User</value>
 				<value>com.model.Queries</value>
+				<value>com.model.OrderItem</value>
 			</list>
 		</property>
 
