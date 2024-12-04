@@ -1,7 +1,6 @@
 package com.model;
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-
+import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,36 +18,49 @@ import org.springframework.web.multipart.MultipartFile;
 @Table(name = "item")
 public class Product implements Serializable {
 
-	private static final long serialVersionUID = 5186013952828648626L;
+    private static final long serialVersionUID = 5186013952828648626L;
 
-	@Id
-	@Column(name = "Id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long productId;
-	
-	@Column(name="category")
-	private String productCategory;
-	
-	@Column(name = "description")
-	private String productDescription;
-	
-	@Column(name = "manufacturer")
-	private String productManufacturer;
-	
-	@NotEmpty(message = "Product Name is mandatory")
-	@Column(name = "name")
-	private String productName;
-	
-	@NotNull(message="Please provide some price")
-	@Min(value = 100, message = "Minimum value should be greater than 100")
-	@Column(name = "price")
-	private double productPrice;
-	
-	@Column(name = "unit")
-	private String unitStock;
+    @Id
+    @Column(name = "Id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long productId;
 
-	@Transient
-	private MultipartFile productImage;
+    @Column(name="category")
+    private String productCategory;
+
+    @SuppressWarnings("deprecation")
+	@NotEmpty(message = "Product Description cannot be empty")
+    @Pattern(regexp = "^[a-zA-Z0-9 ]*$", message = "Product Description cannot contain special characters")
+    @Column(name = "description")
+    private String productDescription;
+
+    @SuppressWarnings("deprecation")
+	@NotEmpty(message = "Product Manufacturer cannot be empty")
+    @Pattern(regexp = "^[a-zA-Z0-9 ]*$", message = "Product Manufacturer cannot contain special characters")
+    @Column(name = "manufacturer")
+    private String productManufacturer;
+
+    // Ràng buộc không để trống và không chứa ký tự đặc biệt
+    @SuppressWarnings("deprecation")
+	@NotEmpty(message = "Please provide a product name.")
+    @Pattern(regexp = "^[a-zA-Z0-9 ]*$", message = "Product name must not contain special characters.")
+    @Column(name = "name")
+    private String productName;
+
+    // Ràng buộc giá không được nhỏ hơn 0
+    @NotNull(message = "Product price cannot be null.")
+    @Min(value = 100, message = "The product price must not be less than 100.")
+    @Column(name = "price")
+    private double productPrice;
+    
+    @NotNull(message = "Unit stocke cannot be null.")
+    @Pattern(regexp = "^[1-9][0-9]*$", message = "Unit stock  must not contain special characters and must be greater than 0.")
+    @Column(name = "unit")
+    private String unitStock;
+
+
+    @Transient
+    private MultipartFile productImage;
 
 	// Getters and Setter
 
