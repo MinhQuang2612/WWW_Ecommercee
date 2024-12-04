@@ -36,19 +36,20 @@
 									placeholder="Enter ProductId.." class="form-control"
 									path="productId" disabled="true"></form:input>
 							</div>
+							
 							<div class="col-sm-6 form-group">
-								<form:label path="productName">Product Name</form:label>
-								 <form:input type="text"
-									placeholder="Enter Product Name.." class="form-control"
-									path="productName"></form:input>
-								 <form:errors path="productName"></form:errors>
+							    <form:label path="productName">Product Name</form:label>
+							    <form:input type="text" placeholder="Enter Product Name.." class="form-control" path="productName"></form:input>
+							    <form:errors path="productName" style="color: red; font-size: 12px;"></form:errors>
 							</div>
+
 						</div>
 						<div class="form-group">
 						<form:label path="productDescription">Product Description</form:label>
 								 <form:textarea type="text"
 									placeholder="Enter Product Description.." class="form-control"
 									path="productDescription"></form:textarea>
+									<form:errors path="productDescription" style="color: red; font-size: 12px;" cssClass="text-danger"/>
 						</div>
 						<%-- <div class="form-group">
 						<form:label path="productCategory">Product Category</form:label>
@@ -63,19 +64,21 @@
 								 <form:input type="text"
 									placeholder="Enter Product Manufacurer.." class="form-control"
 									path="productManufacturer"></form:input>
+									<form:errors path="productManufacturer" style="color: red; font-size: 12px;" cssClass="text-danger"/>
 							</div>
 							<div class="col-sm-4 form-group">
 								<form:label path="productPrice">Product Price</form:label>
 								 <form:input type="text"
 									placeholder="Enter Product Price.." class="form-control"
 									path="productPrice"></form:input>
-								 <form:errors path="productPrice"></form:errors>
+								 <form:errors path="productPrice" style="color: red; font-size: 12px;"></form:errors>
 							</div>
 							<div class="col-sm-4 form-group">
 								<form:label path="unitStock">Number of Products</form:label>
 								 <form:input type="text"
 									placeholder="Number of Products.." class="form-control"
 									path="unitStock"></form:input>
+								<form:errors path="unitStock" style="color: red; font-size: 12px;" cssClass="text-danger"/>
 							</div>
 						</div>
 					 	<div class="form-group">
