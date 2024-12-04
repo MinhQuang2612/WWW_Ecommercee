@@ -10,6 +10,7 @@ import com.dao.CustomerOrderDao;
 import com.model.Cart;
 import com.model.CartItem;
 import com.model.CustomerOrder;
+import com.model.OrderItem;
 
 @Service
 public class CustomerOrderServiceImpl implements CustomerOrderService {
@@ -38,5 +39,10 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 	@Transactional
 	public List<CustomerOrder> getOrderHistoryByCustomerId(Long customerId) {
         return customerOrderDao.getOrderHistoryByCustomerId(customerId);
+    }
+	
+	@Transactional
+    public List<OrderItem> getOrderItemsByOrderId(Long orderId) {
+        return customerOrderDao.getOrderItemsByOrderId(orderId);
     }
 }

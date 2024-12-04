@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.dao.UserDao;
 import com.model.Customer;
 import com.model.CustomerOrder;
+import com.model.OrderItem;
 import com.model.Product;
 import com.model.Queries;
 import com.service.CustomerOrderService;
@@ -67,6 +69,19 @@ public class HomeController {
         
         return "orderHistory"; 
     }
+	
+	@RequestMapping("/orderDetail/{orderId}")
+	public String viewOrderDetail(@PathVariable("orderId") Long orderId, Model model) {
+	    // Lấy danh sách OrderItem từ service
+	    List<OrderItem> orderItems = customerOrderService.getOrderItemsByOrderId(orderId);
+
+	    // Thêm danh sách vào model để hiển thị trên view
+	    model.addAttribute("orderItems", orderItems);
+
+	    // Trả về view "orderDetail"
+	    return "orderDetail";
+	}
+
 
 	@RequestMapping({ "/", "/index", "/index1" })
 	public ModelAndView sayIndex() {

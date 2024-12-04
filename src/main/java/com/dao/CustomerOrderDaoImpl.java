@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.model.CustomerOrder;
+import com.model.OrderItem;
 
 @Repository
 @Transactional
@@ -35,5 +36,16 @@ public class CustomerOrderDaoImpl implements CustomerOrderDao {
         // Return the list of customer orders
         return query.list();
     }
+	
+	@Override
+	public List<OrderItem> getOrderItemsByOrderId(Long orderId) {
+	    Session session = sessionFactory.openSession();
+	    Query query = session.createQuery("FROM OrderItem oi WHERE oi.customerOrder.customerOrderId = :orderId");
+	    query.setParameter("orderId", orderId);
+
+	    List<OrderItem> orderItems = query.list();
+	    session.close();
+	    return orderItems;
+	}
 
 }

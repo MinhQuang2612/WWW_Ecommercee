@@ -137,6 +137,17 @@ public class ProductController {
 		return "redirect:/getAllProducts";
 	}
 
+	@RequestMapping(value = "/admin/product/addProduct", method = RequestMethod.GET)
+	public String getProductForm(Model model) {
+		Product product = new Product();
+		// New Arrivals
+		// set the category as 1 for the Book book
+		product.setProductCategory("Android");
+		model.addAttribute("productFormObj", product);
+		return "addProduct";
+
+	}
+
 	@RequestMapping(value = "/admin/product/addProduct", method = RequestMethod.POST)
 	public String addProduct(@Valid @ModelAttribute(value = "productFormObj") Product product, BindingResult result) {
 		// Binding Result is used if the form that has any error then it will
@@ -169,12 +180,9 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = "/admin/product/editProduct", method = RequestMethod.POST)
-	public String editProduct(@Valid @ModelAttribute(value = "editProductObj") Product product, BindingResult result) {
-	    if (result.hasErrors()) {
-	        return "editProduct";
-	    }
-	    productService.editProduct(product);
-	    return "redirect:/getAllProducts";
+	public String editProduct(@ModelAttribute(value = "editProductObj") Product product) {
+		productService.editProduct(product);
+		return "redirect:/getAllProducts";
 	}
 
 	@RequestMapping("/getProductsList")
